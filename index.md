@@ -1,37 +1,94 @@
-## Welcome to GitHub Pages
+## Using CoffeeScript in GitHub Pages 
 
-You can use the [editor on GitHub](https://github.com/francisfuzz/using-coffeescript-in-pages/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+### Setup
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+First, follow these instructions:
+* [Create a new GitHub Pages site](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site)
+* [Add a theme to your GitHub Pages site with theme chooser](https://docs.github.com/en/pages/getting-started-with-github-pages/adding-a-theme-to-your-github-pages-site-with-the-theme-chooser)
+* [Configure the publishing source for your site](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site) to `gh-pages`
 
-### Markdown
+Next, follow the instructions for [customizing your theme's HTML layout](https://docs.github.com/en/pages/setting-up-a-github-pages-site-with-jekyll/adding-a-theme-to-your-github-pages-site-using-jekyll#customizing-your-themes-html-layout). Be sure to use the theme you added with theme chooser; you'll create a new `_layouts/default.html` file using the same contents as the theme.
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+### Configuration
 
-```markdown
-Syntax highlighted code block
+Follow [these instructions for testing the Pages site locally](https://docs.github.com/en/pages/setting-up-a-github-pages-site-with-jekyll/testing-your-github-pages-site-locally-with-jekyll). The repo include some "convenience" scripts for bootstrapping and serving up the site.
 
-# Header 1
-## Header 2
-### Header 3
+Ensure that your Gemfile is created:
 
-- Bulleted
-- List
+```ruby
+# https://bundler.io/gemfile.html
 
-1. Numbered
-2. List
+source 'https://rubygems.org'
 
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+gem 'github-pages', group: :jekyll_plugins
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+As well as your `_config.yml` being updated to use CoffeeScript:
 
-### Jekyll Themes
+```yaml
+# I chose this theme, but yours could be completely different 😉
+theme: jekyll-theme-minimal
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/francisfuzz/using-coffeescript-in-pages/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+plugins:
+  - jekyll-coffeescript
+```
 
-### Support or Contact
+### The CoffeeScript
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+Create a new file, `assets/js/index.coffee`:
+
+```coffee
+---
+---
+
+# Source: https://coffeescript.org/#introduction
+# Assignment:
+number   = 42
+opposite = true
+
+# Conditions:
+number = -42 if opposite
+
+# Functions:
+square = (x) -> x * x
+
+# Arrays:
+list = [1, 2, 3, 4, 5]
+
+# Objects:
+math =
+  root:   Math.sqrt
+  square: square
+  cube:   (x) -> x * square x
+
+# Splats:
+race = (winner, runners...) ->
+  print winner, runners
+
+originallyCompiledFromCoffeeScript = true 
+
+# Existence:
+console.log "This alert was originally compiled from CoffeeScript!" if originallyCompiledFromCoffeeScript?
+
+# Array comprehensions:
+cubes = (math.cube num for num in list)
+```
+
+Some important observations:
+
+* Internally, Jekyll compiles your site and outputs the files to the `_site` directory. `_site` includes an `assets/js/` directory by default, so we can take advantage of the pipeline and include our own CoffeeScript files within `./assets/js`.
+* The two `---` markers at the top of the CoffeeScript file are important for Jekyll to recognize these are assets to be compiled. Read more in [Jekyll's Docs: Content > Assets](https://jekyllrb.com/docs/assets/).
+
+Last, incorporate the file in the `_layouts/default.html` created earlier:
+
+```html
+    <script src="{{ "/assets/js/index.js" | relative_url }}"></script>
+```
+
+Run the site -- locally or on GitHub Pages itself -- and open your browser's JavaScript Console. You should see the following message logged:
+
+```javascript
+"This alert was originally compiled from CoffeeScript!"
+```
+
+💃
