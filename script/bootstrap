@@ -1,0 +1,17 @@
+# Docs: https://docs.github.com/en/pages/setting-up-a-github-pages-site-with-jekyll/testing-your-github-pages-site-locally-with-jekyll#prerequisites
+
+# `ruby` must be installed 
+if ! command -v ruby &> /dev/null
+then
+    echo "ruby could not be found"
+    exit 1
+fi
+
+# `bundle` must be installed
+if ! command -v bundle &> /dev/null
+then
+    echo "bundle could not be found"
+    exit 1
+fi
+
+bundle install
