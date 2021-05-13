@@ -25,8 +25,10 @@ math =
 race = (winner, runners...) ->
   print winner, runners
 
+originallyCompiledFromCoffeeScript = true 
+
 # Existence:
-alert "I knew it!" if elvis?
+alert "This alert was originally compiled from CoffeeScript!" if originallyCompiledFromCoffeeScript?
 
 # Array comprehensions:
 cubes = (math.cube num for num in list)
