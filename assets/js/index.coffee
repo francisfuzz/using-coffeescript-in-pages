@@ -28,7 +28,7 @@ race = (winner, runners...) ->
 originallyCompiledFromCoffeeScript = true 
 
 # Existence:
-alert "This alert was originally compiled from CoffeeScript!" if originallyCompiledFromCoffeeScript?
+console.log "This alert was originally compiled from CoffeeScript!" if originallyCompiledFromCoffeeScript?
 
 # Array comprehensions:
 cubes = (math.cube num for num in list)
